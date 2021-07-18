@@ -1,0 +1,102 @@
+name: Publish
+id: publish
+on:
+  push:
+    tags:
+      - v*
+
+env:
+  NODE_VERSION: 12
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: js-bugfixes
+    environment:
+      name: build
+      url: ${{ steps.create_release.outputs.html_url }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: false
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: |
+          npm ci
+          npm run lint
+          npm run build
+          npm pack
+      - name: upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: package
+          path: "js-bugfixes/*.tgz"
+      - run: echo "tag=${GITHUB_REF##*/v} >> $GITHUB_ENV
+      - name: upload to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: 'bugfixes/js-bugfixes-${{ env.tag }}.tgz'
+          asset_name: 'js-bugfixes-${{ env.tag }}.tgz'
+          asset_content_type: application/zip
+      - run: echo ${{ steps.create_release.outputs.id }} >> release.txt
+      - name: upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: release_id
+          path: js-bugfixes/release.txt
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: release
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@v2
+        with:
+          name: release_id
+      - run: echo "release_id=$(cat release.txt)" >> $GITHUB_ENV
+      - name: publush
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: process.env.release_id,
+              draft: false
+            })
+
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: download
+        uses: actions/download-artifact@v2
+        with:
+          name: package
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https//npm.pkg.github.com/
+          scope: @bugfixes
+      - run: echo "registry=https://npm.pkg.github.com/@bugfixes" >> .npmrc
+      - run: npm publish $(ls *tgz) --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
