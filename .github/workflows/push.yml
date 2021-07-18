@@ -1,5 +1,4 @@
 name: Publish
-id: publish
 on:
   push:
     tags:
