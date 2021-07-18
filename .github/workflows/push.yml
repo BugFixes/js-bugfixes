@@ -95,7 +95,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https//npm.pkg.github.com/
-          scope: @bugfixes
+          scope: "@bugfixes"
       - run: echo "registry=https://npm.pkg.github.com/@bugfixes" >> .npmrc
       - run: npm publish $(ls *tgz) --access public
         env:
