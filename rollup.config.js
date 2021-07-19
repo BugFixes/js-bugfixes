@@ -1,5 +1,6 @@
+import commonjs from '@rollup/plugin-commonjs'
+
 const typescript = require('@rollup/plugin-typescript')
-const commonjs = require('@rollup/plugins-commonjs')
 const {
   babel
 } = require('@rollup/plugin-babel')
