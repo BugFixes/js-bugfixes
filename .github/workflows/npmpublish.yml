@@ -23,8 +23,12 @@ jobs:
         run: |
           npm rebuild
           npm run prepare --if-present
-#      - name: tests
-#        run: npm test
+      - name: tests
+        run: npm test
+      - name: update version
+        run: |
+          export tag=${GITHUB_REF##*/v}
+          npm --no-git-tag-version version $tag
       - name: publish
         run: npm publish
         env:

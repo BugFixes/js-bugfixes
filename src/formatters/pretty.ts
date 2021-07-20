@@ -1,7 +1,11 @@
 import chalk from 'chalk'
-import { LogLevel } from "../constants"
+import {
+  LogLevel,
+} from "../constants"
 
-import type { FormattedLog } from "../types"
+import type {
+  FormattedLog,
+} from "../types"
 
 function formatTimestamp(timestamp: Date): string {
   return chalk.cyan(`[${timestamp.toISOString()}]`)
@@ -11,14 +15,15 @@ function formatLevel(level: LogLevel): string {
   const strLevel = LogLevel[level].toUpperCase()
 
   switch (level) {
-    case 1:
-      return chalk.greenBright(strLevel)
-    case 2:
-      return chalk.blueBright(strLevel)
-    case 3:
-      return chalk.yellowBright(strLevel)
-    default:
+    case LogLevel.fatal:
+    case LogLevel.error:
       return chalk.redBright(strLevel)
+    case LogLevel.warn:
+      return chalk.yellowBright(strLevel)
+    case LogLevel.info:
+      return chalk.greenBright(strLevel)
+    default:
+      return chalk.blueBright(strLevel)
   }
 }
 

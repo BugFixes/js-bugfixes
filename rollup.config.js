@@ -1,5 +1,4 @@
-import commonjs from '@rollup/plugin-commonjs'
-
+const commonjs = require('@rollup/plugin-commonjs')
 const typescript = require('@rollup/plugin-typescript')
 const {
   babel
@@ -34,7 +33,7 @@ module.exports = [
         ],
         presets: [
           [
-            '@bugfxies',
+            '@bugfixes',
             {
               useRuntimeESModules: false
             }

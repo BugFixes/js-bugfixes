@@ -1,6 +1,6 @@
 {
   "name": "@bugfixes/js-bugfixes",
-  "version": "0.0.2",
+  "version": "0.0.10",
   "engines": {
     "node": ">=15.0.0",
     "npm": ">7.0.0"
@@ -31,6 +31,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublish": "npm run build",
+    "preversion": "npm run test",
     "release": "standard-version",
     "setup:hooks": "husky install",
     "test": "npm run test:units",

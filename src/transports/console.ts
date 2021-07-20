@@ -1,5 +1,11 @@
-import {LogLevel} from "../constants"
-import type {FormattedLog, FormatterFn, LogTransport} from "../types"
+import {
+  LogLevel,
+} from "../constants"
+import type {
+  FormattedLog,
+  FormatterFn,
+  LogTransport,
+} from "../types"
 
 type Options = {
   formatter?: FormatterFn
@@ -14,32 +20,29 @@ export class ConsoleTransport implements LogTransport {
 
   public dispatch(log: FormattedLog): void {
     const format = this.formatter
-    const formatedLog = typeof format === 'function' ? format(log) : log
+    const formattedLog = typeof format === 'function' ? format(log) : log
 
     switch (log.level) {
       case LogLevel.log:
-        console.log(formatedLog)
-        return
-
+      case LogLevel.debug:
       case LogLevel.info:
-        console.info(formatedLog)
+        console.info(formattedLog)
         return
 
       case LogLevel.warn:
-        console.warn(formatedLog)
+        console.warn(formattedLog)
         return
 
       case LogLevel.error:
       case LogLevel.fatal:
-      case LogLevel.panic:
       case LogLevel.crash:
-        console.error(formatedLog)
+      case LogLevel.panic:
+        console.error(formattedLog)
         return
 
-      case LogLevel.debug:
       case LogLevel.unknown:
       default:
-        console.debug(formatedLog)
+        console.log(formattedLog)
         return
     }
   }

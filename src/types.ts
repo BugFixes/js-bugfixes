@@ -10,7 +10,7 @@ export type LogPayload = {
 export type FormattedLog = {
   [propName: string]: any,
   expose?: boolean,
-  headers? : {
+  headers?: {
     [propName: string]: any,
   },
   level: LogLevel,
