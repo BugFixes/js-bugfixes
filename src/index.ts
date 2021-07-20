@@ -1,5 +1,9 @@
-import { extend } from 'extend'
-import { LogLevel } from './constants'
+import {
+  extend,
+} from '@bugfixes/object-utils'
+import {
+  LogLevel,
+} from './constants'
 import type {
   FormattedLog,
   LogMessage,
@@ -30,7 +34,7 @@ export class Log {
   }
 
   public dispatch(level: LogLevel, message: LogMessage, payload: LogPayload = {}): void {
-    if (level < this.level) {
+    if (level > this.level) {
       return
     }
 
@@ -69,7 +73,7 @@ export class Log {
     return new Log({
       level: level ?? this.level,
       payload: typeof payload === 'object' ? extend({}, this.payload, payload) : this.payload,
-      transport: transport ?? this.transport
+      transport: transport ?? this.transport,
     })
   }
 
@@ -104,7 +108,7 @@ export class Log {
         output.statusCode = err.statusCode
       }
 
-      if (level < LogLevel.error) {
+      if (level > LogLevel.error) {
         output.level = LogLevel.error
       }
 
@@ -116,7 +120,7 @@ export class Log {
     return {
       ...output,
       message: msg,
-      ...payload
+      ...payload,
     }
   }
 }
