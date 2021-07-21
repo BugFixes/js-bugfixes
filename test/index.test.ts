@@ -100,7 +100,7 @@ describe('Log handler', function () {
       log.dispatch(LogLevel.info, msg)
       log.dispatch(LogLevel.debug, msg)
 
-      expect(transport.dispatch).toHaveBeenCalledTimes(3)
+      expect(transport.dispatch).toHaveBeenCalledTimes(2)
       expect(transport.dispatch).toHaveBeenCalledWith({
         level: LogLevel.fatal,
         message: msg,
