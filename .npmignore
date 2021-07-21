@@ -1,5 +1,7 @@
 coverage
 src
+test
 babel.config.js
+jest.config.js
 rollup.config.js
 tsconfig.json
