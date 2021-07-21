@@ -4,7 +4,7 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.ts',
   ],
-  coverageReports: [
+  coverageReporters: [
     'lcov',
   ],
   coverageThreshold: {
