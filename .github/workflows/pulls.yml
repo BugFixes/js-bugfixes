@@ -3,15 +3,6 @@ on:
   push:
     branches-ignore:
       - main
-  check_suite:
-    types:
-      - completed
-  pull_request:
-    types:
-      - opened
-      - edited
-      - reopened
-      - synchronize
 
 jobs:
   test:
