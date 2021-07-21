@@ -27,6 +27,8 @@ jobs:
         run: npm test
       - name: update version
         run: npm --no-git-tag-version version ${GITHUB_REF##*/v}
+      - name: build
+        run: npm run build
       - name: publish
         run: npm publish
         env:
