@@ -38,8 +38,8 @@
     "test:units": "jest"
   },
   "devDependencies": {
-    "@bugfixes/babel-preset": "^0.0.2",
-    "@bugfixes/eslint-config": "^0.0.1",
+    "@bugfixes/babel-preset": "^0.1.0",
+    "@bugfixes/eslint-config": "^0.1.0",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@rollup/plugin-babel": "^5.3.0",
